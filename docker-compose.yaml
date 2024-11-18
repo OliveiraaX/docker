@@ -1,0 +1,31 @@
+version: '3.0'
+
+services:
+  apache:
+    image: httpd:latest  # Imagem do Apache
+    container_name: apache_server
+    ports:
+      - "8080:80"  # Mapeando a porta 80 do container para a porta 8080 do host
+    volumes:
+      - ./html:/usr/local/apache2/htdocs/  # Mapeando o diretório ./html do host para o diretório do Apache
+    networks:
+      - webnet
+
+  banco:
+    image: mariadb
+    container_name: banco_server
+    environment:
+      - MYSQL_ROOT_PASSWORD=oliveir@#!
+      - MYSQL_USER=oliveira
+      - MYSQL_PASSWORD=oliveira#!
+    volumes:
+      - data:/var/lib/mysql  # Persistência dos dados do banco
+    networks:
+      - webnet
+
+volumes:
+  data: {}  # Volume para persistir os dados do MariaDB
+
+networks:
+  webnet:
+    driver: bridge  # Rede personalizada para os containers
